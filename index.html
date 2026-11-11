@@ -12,12 +12,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
 button { font-size: 15px; padding: 8px 10px; border: none; border-radius: 8px; background: #0a84ff; color: white; cursor: pointer; min-width: 42px; touch-action: manipulation; }
 button:active { background: #0066cc; }
 input[type="range"] { width: 100%; margin: 8px 0; accent-color: #0a84ff; }
-.direction { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
-.direction button { background: #3a3a3c; color: #f2f2f7; flex: 1; font-size: 14px; padding: 10px; }
-.direction button.active { background: #0a84ff; color: white; }
 table { width: 100%; border-collapse: collapse; margin-top: 16px; background: #1a1a1a; border-radius: 12px; overflow: hidden; }
 th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; font-size: 15px; color: #f2f2f7; }
-th { background: #0a84ff; color: white; }
 </style>
 </head>
 <body>
@@ -34,23 +30,6 @@ th { background: #0a84ff; color: white; }
   </div>
 </div>
 
-<div class="input-group">
-  <div class="value" id="windDisplay">0</div>
-  <input type="range" id="windSlider" min="0" max="21" value="0" oninput="setWind(this.value)">
-  <div class="buttons">
-    <button onclick="changeWind(-5)">−5</button>
-    <button onclick="changeWind(-3)">−3</button>
-    <button onclick="changeWind(-1)">−1</button>
-    <button onclick="changeWind(1)">+1</button>
-    <button onclick="changeWind(3)">+3</button>
-    <button onclick="changeWind(5)">+5</button>
-  </div>
-  <div class="direction">
-    <button id="withBtn" class="active" onclick="setDirection(1)">Help</button>
-    <button id="againstBtn" onclick="setDirection(-1)">Hurt</button>
-  </div>
-</div>
-
 <table id="results">
   <tr><td>1/1</td><td id="fullAngle">-</td><td id="fullTweak">-</td></tr>
   <tr><td>1/2</td><td id="medAngle">-</td><td id="medTweak">-</td></tr>
@@ -60,14 +39,10 @@ th { background: #0a84ff; color: white; }
 
 <script>
 let target = 48;
-let windAbs = 0;
-let direction = 1;
 
 function updateDisplay() {
   document.getElementById('targetDisplay').textContent = target;
-  document.getElementById('windDisplay').textContent = windAbs;
   document.getElementById('targetSlider').value = target;
-  document.getElementById('windSlider').value = windAbs;
   calculate();
 }
 
@@ -76,31 +51,14 @@ function setTarget(val) {
   updateDisplay();
 }
 
-function setWind(val) {
-  windAbs = parseInt(val);
-  updateDisplay();
-}
-
-function setDirection(dir) {
-  direction = dir;
-  document.getElementById('withBtn').classList.toggle('active', dir === 1);
-  document.getElementById('againstBtn').classList.toggle('active', dir === -1);
-  calculate();
-}
-
 function changeTarget(delta) {
   target = Math.max(0, Math.min(96, target + delta));
   updateDisplay();
 }
 
-function changeWind(delta) {
-  windAbs = Math.max(0, Math.min(21, windAbs + delta));
-  updateDisplay();
-}
-
 function calculate() {
   const units = target / 4.8;
-  const signedWind = windAbs * direction;
+  const signedWind = 0; // no wind
   const forces = [
     { name: '1/1', dpu: 1, id: 'full' },
     { name: '1/2', dpu: 2, id: 'med' },
