@@ -7,7 +7,6 @@
 <style>
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 16px; max-width: 500px; margin: auto; background: #000000; color: #f2f2f7; touch-action: manipulation; }
 .input-group { margin: 16px 0; background: #1a1a1a; padding: 12px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
-label { display: block; font-weight: bold; margin-bottom: 6px; font-size: 15px; color: #f2f2f7; }
 .value { font-size: 26px; font-weight: bold; text-align: center; margin: 8px 0; color: #ffffff; }
 .buttons { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
 button { font-size: 15px; padding: 8px 10px; border: none; border-radius: 8px; background: #0a84ff; color: white; cursor: pointer; min-width: 42px; touch-action: manipulation; }
@@ -23,7 +22,6 @@ th { background: #0a84ff; color: white; }
 </head>
 <body>
 <div class="input-group">
-  <label>Target Distance (mm)</label>
   <div class="value" id="targetDisplay">48</div>
   <input type="range" id="targetSlider" min="0" max="96" value="48" oninput="setTarget(this.value)">
   <div class="buttons">
@@ -37,7 +35,6 @@ th { background: #0a84ff; color: white; }
 </div>
 
 <div class="input-group">
-  <label>Wind Strength</label>
   <div class="value" id="windDisplay">0</div>
   <input type="range" id="windSlider" min="0" max="21" value="0" oninput="setWind(this.value)">
   <div class="buttons">
@@ -115,7 +112,7 @@ function calculate() {
   forces.forEach(f => {
     const precise = 90 - (units * f.dpu) + signedWind;
     const integer = Math.floor(precise);
-    const fromVertical = 90 - integer;  // 90 becomes 0, 80 becomes 10, etc.
+    const fromVertical = 90 - integer;
     const tweak = Math.abs(precise - integer) < 0.01 ? 'Exact' : 'LOW';
     document.getElementById(f.id + 'Angle').textContent = fromVertical + '°';
     document.getElementById(f.id + 'Tweak').textContent = tweak;
