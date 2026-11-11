@@ -58,7 +58,7 @@ th { background: #0a84ff; color: white; }
 </div>
 
 <table id="results">
-  <tr><th>Force</th><th>Angle</th><th>Tweak</th></tr>
+  <tr><th>Force</th><th>Angle from Vertical</th><th>Tweak</th></tr>
   <tr><td>1/1</td><td id="fullAngle">-</td><td id="fullTweak">-</td></tr>
   <tr><td>1/2</td><td id="medAngle">-</td><td id="medTweak">-</td></tr>
   <tr><td>1/3</td><td id="smallAngle">-</td><td id="smallTweak">-</td></tr>
@@ -118,8 +118,9 @@ function calculate() {
   forces.forEach(f => {
     const precise = 90 - (units * f.dpu) + signedWind;
     const integer = Math.floor(precise);
+    const fromVertical = 90 - integer;  // 90 becomes 0, 80 becomes 10, etc.
     const tweak = Math.abs(precise - integer) < 0.01 ? 'Exact' : 'LOW';
-    document.getElementById(f.id + 'Angle').textContent = integer + '°';
+    document.getElementById(f.id + 'Angle').textContent = fromVertical + '°';
     document.getElementById(f.id + 'Tweak').textContent = tweak;
   });
 }
