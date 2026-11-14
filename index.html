@@ -14,12 +14,26 @@ button:active { background: #0066cc; }
 input[type="range"] { width: 100%; margin: 8px 0; accent-color: #0a84ff; }
 table { width: 100%; border-collapse: collapse; margin-top: 16px; background: #1a1a1a; border-radius: 12px; overflow: hidden; }
 th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; font-size: 15px; color: #f2f2f7; }
+.small-label { font-size: 12px; color: #aaa; text-align: center; margin-bottom: 4px; }
 </style>
 </head>
 <body>
 <div class="input-group">
+  <div class="small-label">Screen size (mm)</div>
+  <div class="value" id="screenDisplay">48</div>
+  <input type="range" id="screenSlider" min="30" max="80" value="48" oninput="setScreen(this.value)">
+  <div class="buttons">
+    <button onclick="changeScreen(-5)">−5</button>
+    <button onclick="changeScreen(-1)">−1</button>
+    <button onclick="changeScreen(1)">+1</button>
+    <button onclick="changeScreen(5)">+5</button>
+  </div>
+</div>
+
+<div class="input-group">
+  <div class="small-label">Target distance (mm)</div>
   <div class="value" id="targetDisplay">48</div>
-  <input type="range" id="targetSlider" min="0" max="96" value="48" oninput="setTarget(this.value)">
+  <input type="range" id="targetSlider" min="0" max="200" value="48" oninput="setTarget(this.value)">
   <div class="buttons">
     <button onclick="changeTarget(-5)">−5</button>
     <button onclick="changeTarget(-3)">−3</button>
@@ -38,12 +52,25 @@ th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; fo
 </table>
 
 <script>
+let screenMm = 48;
 let target = 48;
 
 function updateDisplay() {
+  document.getElementById('screenDisplay').textContent = screenMm;
+  document.getElementById('screenSlider').value = screenMm;
   document.getElementById('targetDisplay').textContent = target;
   document.getElementById('targetSlider').value = target;
   calculate();
+}
+
+function setScreen(val) {
+  screenMm = parseInt(val);
+  updateDisplay();
+}
+
+function changeScreen(delta) {
+  screenMm = Math.max(30, Math.min(80, screenMm + delta));
+  updateDisplay();
 }
 
 function setTarget(val) {
@@ -52,13 +79,13 @@ function setTarget(val) {
 }
 
 function changeTarget(delta) {
-  target = Math.max(0, Math.min(96, target + delta));
+  target = Math.max(0, Math.min(200, target + delta));
   updateDisplay();
 }
 
 function calculate() {
-  const units = target / 4.8;
-  const signedWind = 0; // no wind
+  const units = target / (screenMm / 10); // screenMm / 10 = units per screen (e.g. 48/10 = 4.8)
+  const signedWind = 0;
   const forces = [
     { name: '1/1', dpu: 1, id: 'full' },
     { name: '1/2', dpu: 2, id: 'med' },
@@ -69,7 +96,7 @@ function calculate() {
   forces.forEach(f => {
     const precise = 90 - (units * f.dpu) + signedWind;
     const integer = Math.floor(precise);
-    const fromVertical = 90 - integer;
+    const fromVertical = Math.max(0, 90 - integer);
     const tweak = Math.abs(precise - integer) < 0.01 ? 'Exact' : 'LOW';
     document.getElementById(f.id + 'Angle').textContent = fromVertical + '°';
     document.getElementById(f.id + 'Tweak').textContent = tweak;
