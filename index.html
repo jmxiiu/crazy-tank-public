@@ -21,7 +21,7 @@ th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; fo
 <div class="input-group">
   <div class="small-label">Screen size (mm)</div>
   <div class="value" id="screenDisplay">48</div>
-  <input type="range" id="screenSlider" min="30" max="80" value="48" oninput="setScreen(this.value)">
+  <input type="range" id="screenSlider" min="30" max="120" value="48" oninput="setScreen(this.value)">
   <div class="buttons">
     <button onclick="changeScreen(-5)">−5</button>
     <button onclick="changeScreen(-1)">−1</button>
@@ -69,7 +69,7 @@ function setScreen(val) {
 }
 
 function changeScreen(delta) {
-  screenMm = Math.max(30, Math.min(80, screenMm + delta));
+  screenMm = Math.max(30, Math.min(120, screenMm + delta));
   updateDisplay();
 }
 
@@ -84,7 +84,7 @@ function changeTarget(delta) {
 }
 
 function calculate() {
-  const units = target / (screenMm / 10); // screenMm / 10 = units per screen (e.g. 48/10 = 4.8)
+  const units = target / (screenMm / 10);
   const signedWind = 0;
   const forces = [
     { name: '1/1', dpu: 1, id: 'full' },
