@@ -20,8 +20,8 @@ th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; fo
 <body>
 <div class="input-group">
   <div class="small-label">Screen size (mm)</div>
-  <div class="value" id="screenDisplay">48</div>
-  <input type="range" id="screenSlider" min="30" max="150" value="48" oninput="setScreen(this.value)">
+  <div class="value" id="screenDisplay">49</div>
+  <input type="range" id="screenSlider" min="30" max="150" value="49" oninput="setScreen(this.value)">
   <div class="buttons">
     <button onclick="changeScreen(-5)">−5</button>
     <button onclick="changeScreen(-1)">−1</button>
@@ -52,7 +52,7 @@ th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; fo
 </table>
 
 <script>
-let screenMm = 48;
+let screenMm = 49;
 let target = 48;
 
 function updateDisplay() {
@@ -95,7 +95,7 @@ function calculate() {
 
   forces.forEach(f => {
     const preciseFromHorizontal = 90 - (units * f.dpu) + signedWind;
-    const fromVerticalPrecise = 90 - preciseFromHorizontal; // angle from vertical
+    const fromVerticalPrecise = 90 - preciseFromHorizontal;
     const integer = Math.floor(fromVerticalPrecise);
     const decimal = (fromVerticalPrecise - integer).toFixed(2);
     document.getElementById(f.id + 'Angle').textContent = integer + '°';
