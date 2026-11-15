@@ -21,7 +21,7 @@ th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; fo
 <div class="input-group">
   <div class="small-label">Screen size (mm)</div>
   <div class="value" id="screenDisplay">48</div>
-  <input type="range" id="screenSlider" min="30" max="120" value="48" oninput="setScreen(this.value)">
+  <input type="range" id="screenSlider" min="30" max="150" value="48" oninput="setScreen(this.value)">
   <div class="buttons">
     <button onclick="changeScreen(-5)">−5</button>
     <button onclick="changeScreen(-1)">−1</button>
@@ -33,7 +33,7 @@ th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; fo
 <div class="input-group">
   <div class="small-label">Target distance (mm)</div>
   <div class="value" id="targetDisplay">48</div>
-  <input type="range" id="targetSlider" min="0" max="200" value="48" oninput="setTarget(this.value)">
+  <input type="range" id="targetSlider" min="0" max="300" value="48" oninput="setTarget(this.value)">
   <div class="buttons">
     <button onclick="changeTarget(-5)">−5</button>
     <button onclick="changeTarget(-3)">−3</button>
@@ -45,10 +45,10 @@ th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; fo
 </div>
 
 <table id="results">
-  <tr><td>1/1</td><td id="fullAngle">-</td><td id="fullTweak">-</td></tr>
-  <tr><td>1/2</td><td id="medAngle">-</td><td id="medTweak">-</td></tr>
-  <tr><td>1/3</td><td id="smallAngle">-</td><td id="smallTweak">-</td></tr>
-  <tr><td>1/4</td><td id="quarterAngle">-</td><td id="quarterTweak">-</td></tr>
+  <tr><td>1/1</td><td id="fullAngle">-</td><td id="fullDecimal">-</td></tr>
+  <tr><td>1/2</td><td id="medAngle">-</td><td id="medDecimal">-</td></tr>
+  <tr><td>1/3</td><td id="smallAngle">-</td><td id="smallDecimal">-</td></tr>
+  <tr><td>1/4</td><td id="quarterAngle">-</td><td id="quarterDecimal">-</td></tr>
 </table>
 
 <script>
@@ -69,7 +69,7 @@ function setScreen(val) {
 }
 
 function changeScreen(delta) {
-  screenMm = Math.max(30, Math.min(120, screenMm + delta));
+  screenMm = Math.max(20, Math.min(150, screenMm + delta));
   updateDisplay();
 }
 
@@ -79,7 +79,7 @@ function setTarget(val) {
 }
 
 function changeTarget(delta) {
-  target = Math.max(0, Math.min(200, target + delta));
+  target = Math.max(0, Math.min(300, target + delta));
   updateDisplay();
 }
 
@@ -94,12 +94,12 @@ function calculate() {
   ];
 
   forces.forEach(f => {
-    const precise = 90 - (units * f.dpu) + signedWind;
-    const integer = Math.floor(precise);
-    const fromVertical = Math.max(0, 90 - integer);
-    const tweak = Math.abs(precise - integer) < 0.01 ? 'Exact' : 'LOW';
-    document.getElementById(f.id + 'Angle').textContent = fromVertical + '°';
-    document.getElementById(f.id + 'Tweak').textContent = tweak;
+    const preciseFromHorizontal = 90 - (units * f.dpu) + signedWind;
+    const fromVerticalPrecise = 90 - preciseFromHorizontal; // angle from vertical
+    const integer = Math.floor(fromVerticalPrecise);
+    const decimal = (fromVerticalPrecise - integer).toFixed(2);
+    document.getElementById(f.id + 'Angle').textContent = integer + '°';
+    document.getElementById(f.id + 'Decimal').textContent = decimal;
   });
 }
 
