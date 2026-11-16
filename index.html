@@ -21,7 +21,7 @@ th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; fo
 <div class="input-group">
   <div class="small-label">Screen size (mm)</div>
   <div class="value" id="screenDisplay">49</div>
-  <input type="range" id="screenSlider" min="30" max="150" value="49" oninput="setScreen(this.value)">
+  <input type="range" id="screenSlider" min="30" max="100" value="49" oninput="setScreen(this.value)">
   <div class="buttons">
     <button onclick="changeScreen(-5)">−5</button>
     <button onclick="changeScreen(-1)">−1</button>
@@ -69,7 +69,7 @@ function setScreen(val) {
 }
 
 function changeScreen(delta) {
-  screenMm = Math.max(20, Math.min(150, screenMm + delta));
+  screenMm = Math.max(20, Math.min(100, screenMm + delta));
   updateDisplay();
 }
 
