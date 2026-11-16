@@ -33,7 +33,7 @@ th, td { padding: 10px; text-align: center; border-bottom: 1px solid #3a3a3c; fo
 <div class="input-group">
   <div class="small-label">Target distance (mm)</div>
   <div class="value" id="targetDisplay">49</div>
-  <input type="range" id="targetSlider" min="0" max="300" value="49" oninput="setTarget(this.value)">
+  <input type="range" id="targetSlider" min="0" max="150" value="49" oninput="setTarget(this.value)">
   <div class="buttons">
     <button onclick="changeTarget(-5)">−5</button>
     <button onclick="changeTarget(-3)">−3</button>
@@ -79,7 +79,7 @@ function setTarget(val) {
 }
 
 function changeTarget(delta) {
-  target = Math.max(0, Math.min(300, target + delta));
+  target = Math.max(0, Math.min(150, target + delta));
   updateDisplay();
 }
 
